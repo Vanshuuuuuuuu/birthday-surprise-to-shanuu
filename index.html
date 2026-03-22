@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hey You :)</title>
+
+    <style>
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #38bdf8;
+            color: #0f172a;
+            cursor: pointer;
+        }
+
+        .box {
+            margin-top: 30px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🎂 Happy Birthday!</h1>
+<p>I made something small for you...</p>
+
+<button onclick="nextStep()">Click here</button>
+
+<div id="content" class="box">
+    <p id="text"></p>
+    <img id="image" src="" width="200" style="border-radius: 12px; display:none;">
+</div>
+
+<script>
+let step = 0;
+
+const messages = [My friendd shanuuu maybe u don't talk to me anymore but still,
+I am always here whenever u need me.
+"You are actually one of my favourite people",
+"Talking to you is the best part of my day sometimes"
+    "Okay so… I didn’t know what to gift you 😅",
+    "So I thought… why not make something myself",
+    "You’re honestly a really special person",
+    "Talking to you just makes things better",
+    "And yeah… I’m really glad I met you 🙂",
+    "Hope you have the best birthday ✨"
+];
+
+function nextStep() {
+    document.getElementById("content").style.display = "block";
+
+    if (step < messages.length) {
+        document.getElementById("text").innerText = messages[step];
+        step++;
+    } else {
+        document.getElementById("text").innerText = "Also… here’s something:";
+        document.getElementById("image").src = "PASTE_IMAGE_LINK_HERE";
+        document.getElementById("image").style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>
