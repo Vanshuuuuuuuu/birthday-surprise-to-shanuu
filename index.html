@@ -2,228 +2,198 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Hey You :)</title>
 
 <style>
 body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
-    background-size: 800% 800%;
-    animation: gradientBG 10s ease infinite;
-    font-family: Arial, sans-serif;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    margin:0;
+    background: linear-gradient(270deg,#ff9a9e,#fad0c4,#a18cd1,#fbc2eb);
+    background-size:800% 800%;
+    animation:bg 10s infinite;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
 }
 
-/* animated background */
-@keyframes gradientBG {
-    0% {background-position: 0%}
-    50% {background-position: 100%}
-    100% {background-position: 0%}
+@keyframes bg{
+0%{background-position:0%}
+50%{background-position:100%}
+100%{background-position:0%}
 }
 
-/* main card */
-.container {
-    width: 90%;
-    max-width: 400px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+.container{
+    width:90%;
+    max-width:400px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(12px);
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
 }
 
-/* heading */
-h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    background:white;
+    color:#ff4b5c;
+    cursor:pointer;
 }
 
-/* button */
-button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 10px;
-    background: white;
-    color: #ff4b5c;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
+#text{min-height:60px;margin-top:15px;}
+
+img{
+    width:100%;
+    border-radius:15px;
+    margin-top:15px;
+    display:none;
 }
 
-button:hover {
-    transform: scale(1.1);
+#finalMsg{
+    display:none;
+    margin-top:15px;
 }
 
-/* text area */
-#text {
-    margin-top: 20px;
-    font-size: 16px;
-    min-height: 60px;
+#secretBtn{
+    display:none;
+    margin-top:15px;
 }
 
-/* image */
-img {
-    width: 100%;
-    border-radius: 15px;
-    margin-top: 15px;
-    display: none;
-    transition: opacity 1s;
-}
-
-/* final message */
-#finalMsg {
-    margin-top: 15px;
-    display: none;
-    font-size: 18px;
-    opacity: 0;
-    transition: opacity 1s;
-}
-
-/* floating hearts */
-.heart {
-    position: fixed;
-    bottom: -10px;
-    color: white;
-    font-size: 18px;
-    animation: floatUp 6s linear infinite;
-}
-
-@keyframes floatUp {
-    from {transform: translateY(0);}
-    to {transform: translateY(-100vh);}
-}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>🎂 Happy Birthday</h1>
-    <p>So… I made something for you</p>
+<h1>🎂 Happy Birthday</h1>
+<p>So… I made something for you</p>
 
-    <button id="startBtn" onclick="startExperience()">Start</button>
+<button id="startBtn" onclick="startExp()">Start</button>
 
-    <div id="content">
-        <p id="text"></p>
-        <img id="slide">
-        <p id="finalMsg"></p>
-    </div>
+<p id="text"></p>
+<img id="slide">
+<p id="finalMsg"></p>
+
+<button id="secretBtn" onclick="showSecret()">Tap this 🙂</button>
+<p id="secretMsg" style="display:none;"></p>
+
 </div>
 
-<audio id="bgmusic" loop>
-    <source src="freesound_community-birthday-card-73275.mp3" type="audio/mpeg">
+<audio id="music" loop>
+<source src="freesound_community-birthday-card-73275.mp3">
 </audio>
 
 <script>
-let step = 0;
-let i = 0;
+let i=0,step=0;
 
-const messages = [
-    "Happiest birthday my shanuu 🎂",
-    "I wasn't able to do anything special for you, but I wanted to make you feel special today",
-    "You are someone really important to me",
-    "Maybe we argue sometimes, maybe things get weird",
-    "But no matter what happens, I’ll always be there",
-    "You really mean a lot to me",
-    "I’m really glad you are in my life",
-    "So yeah… I tried making something instead 🙂"
+const msgs=[
+"Happiest birthday my shanuu 🎂",
+"I couldn’t do something big but I wanted this to feel special",
+"You are someone really important to me",
+"Even when things get weird, I still care",
+"You really mean a lot to me",
+"I’m glad you are in my life 🙂"
 ];
 
-const images = [
-    "shanu_1.jpg",
-    "shanu_2.jpg",
-    "shanu_3.jpg",
-    "shanu_4.jpg",
-    "shanu_5.jpg"
-];
+const imgs=["shanu_1.jpg","shanu_2.jpg","shanu_3.jpg","shanu_4.jpg","shanu_5.jpg"];
 
-function startExperience() {
-    document.getElementById("startBtn").style.display = "none";
-
-    let music = document.getElementById("bgmusic");
-    music.play().catch(()=>{});
-
-    playMessages();
-    createHearts();
+function startExp(){
+document.getElementById("startBtn").style.display="none";
+document.getElementById("music").play().catch(()=>{});
+typeMsg();
+hearts();
 }
 
-function typeWriter(text, callback) {
-    let speed = 30;
-    document.getElementById("text").innerHTML = "";
-    i = 0;
+function typeMsg(){
+if(step<msgs.length){
+let txt=msgs[step];
+let el=document.getElementById("text");
+el.innerHTML="";
+i=0;
 
-    function typing() {
-        if (i < text.length) {
-            document.getElementById("text").innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typing, speed);
-        } else if (callback) {
-            callback();
-        }
-    }
-    typing();
+function type(){
+if(i<txt.length){
+el.innerHTML+=txt.charAt(i);
+i++;
+setTimeout(type,30);
+}else{
+step++;
+setTimeout(typeMsg,1200);
+}
+}
+type();
+}else{
+slideShow();
+}
 }
 
-function playMessages() {
-    if (step < messages.length) {
-        typeWriter(messages[step], () => {
-            step++;
-            setTimeout(playMessages, 1500);
-        });
-    } else {
-        startSlideshow();
-    }
+function slideShow(){
+let index=0;
+let img=document.getElementById("slide");
+img.style.display="block";
+
+let inter=setInterval(()=>{
+img.src=imgs[index];
+index++;
+
+if(index===imgs.length){
+clearInterval(inter);
+
+setTimeout(()=>{
+img.style.display="none";
+document.getElementById("finalMsg").style.display="block";
+document.getElementById("finalMsg").innerText="That’s it… just wanted to make you smile 🙂";
+confetti();
+
+setTimeout(()=>{
+document.getElementById("secretBtn").style.display="block";
+},1500);
+
+},2000);
+}
+},2000);
 }
 
-function startSlideshow() {
-    let index = 0;
-    let img = document.getElementById("slide");
-    let finalMsg = document.getElementById("finalMsg");
-
-    img.style.display = "block";
-
-    let interval = setInterval(() => {
-        img.style.opacity = 0;
-
-        setTimeout(() => {
-            img.src = images[index];
-            img.style.opacity = 1;
-            index++;
-        }, 500);
-
-        if (index === images.length) {
-            clearInterval(interval);
-
-            setTimeout(() => {
-                img.style.display = "none";
-                finalMsg.style.display = "block";
-                finalMsg.innerText = "That’s it… just wanted to make you smile 🙂";
-                setTimeout(() => finalMsg.style.opacity = 1, 100);
-            }, 2000);
-        }
-    }, 2000);
+function showSecret(){
+document.getElementById("secretMsg").style.display="block";
+document.getElementById("secretMsg").innerText="Okay… secret is… you matter more than you think 🙂";
 }
 
-/* floating hearts */
-function createHearts() {
-    setInterval(() => {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerText = "❤";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (12 + Math.random() * 20) + "px";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 6000);
-    }, 500);
+/* hearts */
+function hearts(){
+setInterval(()=>{
+let h=document.createElement("div");
+h.innerText="❤";
+h.style.position="fixed";
+h.style.bottom="0";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize="20px";
+h.style.color="white";
+h.style.animation="up 5s linear";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),5000);
+},500);
 }
+
+/* confetti */
+function confetti(){
+for(let i=0;i<50;i++){
+let c=document.createElement("div");
+c.style.position="fixed";
+c.style.width="6px";
+c.style.height="6px";
+c.style.background="white";
+c.style.top="0";
+c.style.left=Math.random()*100+"vw";
+c.style.animation="fall 3s linear";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),3000);
+}
+}
+
 </script>
 
 </body>
