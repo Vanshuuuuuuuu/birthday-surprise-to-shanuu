@@ -5,72 +5,133 @@
 
     <style>
         body {
-            background: #0f172a;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
             color: #e2e8f0;
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 80px;
+            overflow: hidden;
         }
 
         h1 {
-            font-size: 36px;
+            font-size: 38px;
+            animation: fadeIn 2s ease-in-out;
         }
 
         button {
-            padding: 12px 20px;
+            padding: 12px 22px;
             font-size: 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             background-color: #38bdf8;
             color: #0f172a;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
         }
 
         .box {
             margin-top: 30px;
             display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        img {
+            width: 220px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .floating {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            opacity: 0.2;
+            border-radius: 50%;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            from {transform: translateY(0);}
+            to {transform: translateY(-800px);}
         }
     </style>
 </head>
 
 <body>
 
-<h1>🎂 Happy Birthday!</h1>
+<h1>🎂 Happy Birthday</h1>
 <p>I made something small for you...</p>
 
-<button onclick="nextStep()">Click here</button>
+<button onclick="nextStep()">Start</button>
 
 <div id="content" class="box">
     <p id="text"></p>
-    <img id="image" src="" width="200" style="border-radius: 12px; display:none;">
+    <img id="image" src="" style="display:none;">
 </div>
 
 <script>
 let step = 0;
+let i = 0;
 
-const messages = [My friendd shanuuu maybe u don't talk to me anymore but still,
-I am always here whenever u need me.
-"You are actually one of my favourite people",
-"Talking to you is the best part of my day sometimes"
-    "Okay so… I didn’t know what to gift you 😅",
-    "So I thought… why not make something myself",
-    "You’re honestly a really special person",
-    "Talking to you just makes things better",
-    "And yeah… I’m really glad I met you 🙂",
-    "Hope you have the best birthday ✨"
+const messages = [
+    "Okay so… I wasn’t sure what to get you 😅",
+    "So I thought I’d try making something instead",
+    "Not gonna lie… this took more effort than expected",
+    "But yeah… you’re actually really important",
+    "Talking to you just makes things lighter",
+    "And I’m genuinely glad you’re in my life 🙂",
+    "So yeah… just wanted to say this in a different way",
 ];
+
+function typeWriter(text, callback) {
+    let speed = 30;
+    document.getElementById("text").innerHTML = "";
+    i = 0;
+
+    function typing() {
+        if (i < text.length) {
+            document.getElementById("text").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        } else if (callback) {
+            callback();
+        }
+    }
+    typing();
+}
 
 function nextStep() {
     document.getElementById("content").style.display = "block";
 
     if (step < messages.length) {
-        document.getElementById("text").innerText = messages[step];
+        typeWriter(messages[step]);
         step++;
     } else {
-        document.getElementById("text").innerText = "Also… here’s something:";
-        document.getElementById("image").src = "PASTE_IMAGE_LINK_HERE";
-        document.getElementById("image").style.display = "block";
+        typeWriter("And yeah… here’s something for you 👇", function() {
+            document.getElementById("image").src = "shanu_1.jpg";
+            document.getElementById("image").style.display = "block";
+        });
     }
+}
+
+// floating dots
+for (let i = 0; i < 25; i++) {
+    let dot = document.createElement("div");
+    dot.className = "floating";
+    dot.style.left = Math.random() * 100 + "vw";
+    dot.style.top = Math.random() * 100 + "vh";
+    dot.style.animationDuration = (5 + Math.random() * 10) + "s";
+    document.body.appendChild(dot);
 }
 </script>
 
