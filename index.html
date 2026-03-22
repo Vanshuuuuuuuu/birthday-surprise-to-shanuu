@@ -10,12 +10,10 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 80px;
-            overflow: hidden;
         }
 
         h1 {
             font-size: 38px;
-            animation: fadeIn 2s ease-in-out;
         }
 
         button {
@@ -26,43 +24,18 @@
             background-color: #38bdf8;
             color: #0f172a;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        button:hover {
-            transform: scale(1.1);
+        img {
+            width: 240px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
         }
 
         .box {
             margin-top: 30px;
             display: none;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        img {
-            width: 220px;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-
-        .floating {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            opacity: 0.2;
-            border-radius: 50%;
-            animation: float 10s infinite;
-        }
-
-        @keyframes float {
-            from {transform: translateY(0);}
-            to {transform: translateY(-800px);}
         }
     </style>
 </head>
@@ -76,7 +49,7 @@
 
 <div id="content" class="box">
     <p id="text"></p>
-    <img id="image" src="" style="display:none;">
+    <img id="slide">
 </div>
 
 <script>
@@ -85,12 +58,19 @@ let i = 0;
 
 const messages = [
     "Okay so… I wasn’t sure what to get you 😅",
-    "So I thought I’d try making something instead",
-    "Not gonna lie… this took more effort than expected",
-    "But yeah… you’re actually really important",
-    "Talking to you just makes things lighter",
-    "And I’m genuinely glad you’re in my life 🙂",
-    "So yeah… just wanted to say this in a different way",
+    "So I tried making something instead",
+    "This actually took effort ngl 😭",
+    "But yeah… you’re really special",
+    "Talking to you just feels nice",
+    "So I thought you deserved something like this",
+];
+
+const images = [
+    "shanu_1.jpg",
+    "shanu_2.jpg",
+    "shanu_3.jpg",
+    "shanu_4.jpg",
+    "shanu_5.jpg"
 ];
 
 function typeWriter(text, callback) {
@@ -117,21 +97,19 @@ function nextStep() {
         typeWriter(messages[step]);
         step++;
     } else {
-        typeWriter("And yeah… here’s something for you 👇", function() {
-            document.getElementById("image").src = "shanu_1.jpg";
-            document.getElementById("image").style.display = "block";
-        });
+        startSlideshow();
     }
 }
 
-// floating dots
-for (let i = 0; i < 25; i++) {
-    let dot = document.createElement("div");
-    dot.className = "floating";
-    dot.style.left = Math.random() * 100 + "vw";
-    dot.style.top = Math.random() * 100 + "vh";
-    dot.style.animationDuration = (5 + Math.random() * 10) + "s";
-    document.body.appendChild(dot);
+function startSlideshow() {
+    let index = 0;
+    let img = document.getElementById("slide");
+    img.style.display = "block";
+
+    setInterval(() => {
+        img.src = images[index];
+        index = (index + 1) % images.length;
+    }, 2000);
 }
 </script>
 
