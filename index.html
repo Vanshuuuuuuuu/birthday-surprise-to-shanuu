@@ -49,7 +49,7 @@
 <h1>🎂 Happy Birthday</h1>
 <p>I made something for you 🙂</p>
 
-<button onclick="nextStep()">Start</button>
+<button id="startBtn" onclick="startExperience()">Start</button>
 
 <div id="content" class="box">
     <p id="text"></p>
@@ -60,6 +60,21 @@
     <source src="freesound_community-birthday-card-73275.mp3" type="audio/mpeg">
 </audio>
 <script>
+    function startExperience() {
+    document.getElementById("startBtn").style.display = "none";
+    document.getElementById("content").style.display = "block";
+
+    playMessages();
+}
+    function playMessages() {
+    if (step < messages.length) {
+        document.getElementById("text").innerText = messages[step];
+        step++;
+        setTimeout(playMessages, 2000); // speed (change if needed)
+    } else {
+        startSlideshow();
+    }
+}
 let step = 0;
 
 const messages = [
@@ -84,7 +99,7 @@ const images = [
     "shanu_5.jpg"
 ];
 
-function nextStep() {
+
     document.getElementById("content").style.display = "block";
 
     // play music
