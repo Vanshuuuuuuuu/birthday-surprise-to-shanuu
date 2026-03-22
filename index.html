@@ -12,6 +12,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 80px;
+            transition: all 1s ease;
         }
 
         @keyframes gradientBG {
@@ -28,11 +29,22 @@
             background: white;
             color: #ff4b5c;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
         }
 
         .box {
             display: none;
             margin-top: 30px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .show {
+            opacity: 1;
         }
 
         img {
@@ -40,6 +52,15 @@
             border-radius: 15px;
             margin-top: 20px;
             display: none;
+            transition: opacity 1s;
+        }
+
+        #finalMsg {
+            display: none;
+            font-size: 20px;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 1s;
         }
     </style>
 </head>
@@ -47,39 +68,27 @@
 <body>
 
 <h1>🎂 Happy Birthday</h1>
-<p>I made something for you 🙂</p>
+<p>So… I made something for you</p>
 
 <button id="startBtn" onclick="startExperience()">Start</button>
 
 <div id="content" class="box">
     <p id="text"></p>
     <img id="slide">
-    <p id="finalMsg" style="display:none; margin-top:20px; font-size:20px;"></p>
+    <p id="finalMsg"></p>
 </div>
+
 <audio id="bgmusic" loop>
     <source src="freesound_community-birthday-card-73275.mp3" type="audio/mpeg">
 </audio>
-<script>
-    function startExperience() {
-    document.getElementById("startBtn").style.display = "none";
-    document.getElementById("content").style.display = "block";
 
-    playMessages();
-}
-    function playMessages() {
-    if (step < messages.length) {
-        document.getElementById("text").innerText = messages[step];
-        step++;
-        setTimeout(playMessages, 2000); // speed (change if needed)
-    } else {
-        startSlideshow();
-    }
-}
+<script>
 let step = 0;
+let i = 0;
 
 const messages = [
     "Happiest birthday my shanuu 🎂",
-    "I wasn’t able to do anything special for you, but I wanted to make you feel special today",
+    "I wasn't able to do anything special for you, but I wanted to make you feel special today",
     "You are someone really important to me",
     "Maybe we argue sometimes, maybe things get weird",
     "But no matter what happens, I’ll always be there",
@@ -99,18 +108,42 @@ const images = [
     "shanu_5.jpg"
 ];
 
+function startExperience() {
+    document.getElementById("startBtn").style.display = "none";
 
-    document.getElementById("content").style.display = "block";
+    let content = document.getElementById("content");
+    content.style.display = "block";
+    setTimeout(() => content.classList.add("show"), 100);
 
-    // play music
     let music = document.getElementById("bgmusic");
-    if (music.paused) {
-        music.play();
-    }
+    music.play().catch(() => {});
 
+    playMessages();
+}
+
+function typeWriter(text, callback) {
+    let speed = 30;
+    document.getElementById("text").innerHTML = "";
+    i = 0;
+
+    function typing() {
+        if (i < text.length) {
+            document.getElementById("text").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        } else if (callback) {
+            callback();
+        }
+    }
+    typing();
+}
+
+function playMessages() {
     if (step < messages.length) {
-        document.getElementById("text").innerText = messages[step];
-        step++;
+        typeWriter(messages[step], () => {
+            step++;
+            setTimeout(playMessages, 1500);
+        });
     } else {
         startSlideshow();
     }
@@ -123,9 +156,14 @@ function startSlideshow() {
 
     img.style.display = "block";
 
-    let interval = setInterval(function() {
-        img.src = images[index];
-        index++;
+    let interval = setInterval(() => {
+        img.style.opacity = 0;
+
+        setTimeout(() => {
+            img.src = images[index];
+            img.style.opacity = 1;
+            index++;
+        }, 500);
 
         if (index === images.length) {
             clearInterval(interval);
@@ -134,6 +172,7 @@ function startSlideshow() {
                 img.style.display = "none";
                 finalMsg.style.display = "block";
                 finalMsg.innerText = "That’s it… just wanted to make you smile 🙂";
+                setTimeout(() => finalMsg.style.opacity = 1, 100);
             }, 2000);
         }
     }, 2000);
