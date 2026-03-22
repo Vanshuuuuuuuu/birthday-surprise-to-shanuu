@@ -5,45 +5,76 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: #e2e8f0;
+            background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+            background-size: 800% 800%;
+            animation: gradientBG 10s ease infinite;
+            color: white;
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 80px;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0%}
+            50% {background-position: 100%}
+            100% {background-position: 0%}
         }
 
         h1 {
-            font-size: 38px;
+            font-size: 40px;
         }
 
         button {
-            padding: 12px 22px;
-            font-size: 16px;
+            padding: 14px 25px;
+            font-size: 18px;
             border: none;
-            border-radius: 10px;
-            background-color: #38bdf8;
-            color: #0f172a;
+            border-radius: 12px;
+            background: white;
+            color: #ff4b5c;
             cursor: pointer;
+            box-shadow: 0 0 15px rgba(255,255,255,0.6);
+            transition: 0.3s;
         }
 
-        img {
-            width: 240px;
-            border-radius: 15px;
-            margin-top: 20px;
-            display: none;
+        button:hover {
+            transform: scale(1.1);
         }
 
         .box {
             margin-top: 30px;
             display: none;
         }
+
+        img {
+            width: 260px;
+            border-radius: 20px;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .floating {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            opacity: 0.3;
+            border-radius: 50%;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            from {transform: translateY(0);}
+            to {transform: translateY(-800px);}
+        }
     </style>
 </head>
 
 <body>
 
-<h1>🎂 Happy Birthday</h1>
-<p>I made something small for you...</p>
+<h1>🎂 Happy Birthday ✨</h1>
+<p>So… I made something for you</p>
 
 <button onclick="nextStep()">Start</button>
 
@@ -52,17 +83,21 @@
     <img id="slide">
 </div>
 
+<audio autoplay loop>
+    <source src="PASTE_MUSIC_LINK_HERE" type="audio/mpeg">
+</audio>
+
 <script>
 let step = 0;
 let i = 0;
 
 const messages = [
-    "Okay so… I wasn’t sure what to get you 😅",
+    "Okay so… I didn’t know what to gift you 😅",
     "So I tried making something instead",
-    "This actually took effort ngl 😭",
+    "This took more effort than expected tbh",
     "But yeah… you’re really special",
-    "Talking to you just feels nice",
-    "So I thought you deserved something like this",
+    "Talking to you just feels different",
+    "So I thought this might make you smile 🙂",
 ];
 
 const images = [
@@ -110,6 +145,16 @@ function startSlideshow() {
         img.src = images[index];
         index = (index + 1) % images.length;
     }, 2000);
+}
+
+// floating particles
+for (let i = 0; i < 30; i++) {
+    let dot = document.createElement("div");
+    dot.className = "floating";
+    dot.style.left = Math.random() * 100 + "vw";
+    dot.style.top = Math.random() * 100 + "vh";
+    dot.style.animationDuration = (5 + Math.random() * 10) + "s";
+    document.body.appendChild(dot);
 }
 </script>
 
