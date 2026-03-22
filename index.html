@@ -2,20 +2,21 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hey You :)</title>
+<title>For You 🙂</title>
 
 <style>
-body {
-    margin:0;
-    background: linear-gradient(270deg,#ff9a9e,#fad0c4,#a18cd1,#fbc2eb);
-    background-size:800% 800%;
-    animation:bg 10s infinite;
-    font-family:Arial;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    color:white;
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(270deg,#ff9a9e,#fad0c4,#a18cd1,#fbc2eb);
+background-size:800% 800%;
+animation:bg 10s ease infinite;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+overflow:hidden;
 }
 
 @keyframes bg{
@@ -24,61 +25,69 @@ body {
 100%{background-position:0%}
 }
 
-.container{
-    width:90%;
-    max-width:400px;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(12px);
-    padding:25px;
-    border-radius:20px;
-    text-align:center;
+.card{
+width:90%;
+max-width:400px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(12px);
+border-radius:20px;
+padding:25px;
+text-align:center;
+box-shadow:0 0 30px rgba(0,0,0,0.2);
 }
 
+h1{margin-bottom:5px;}
+
 button{
-    padding:10px 18px;
-    border:none;
-    border-radius:10px;
-    background:white;
-    color:#ff4b5c;
-    cursor:pointer;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:white;
+color:#ff4b5c;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
 }
+button:hover{transform:scale(1.1);}
 
 #text{min-height:60px;margin-top:15px;}
 
 img{
-    width:100%;
-    border-radius:15px;
-    margin-top:15px;
-    display:none;
+width:100%;
+border-radius:15px;
+margin-top:15px;
+display:none;
+opacity:0;
+transition:opacity 1s;
 }
 
 #finalMsg{
-    display:none;
-    margin-top:15px;
+display:none;
+margin-top:15px;
+opacity:0;
+transition:opacity 1s;
 }
 
-#secretBtn{
-    display:none;
-    margin-top:15px;
-}
+#secretBtn{display:none;margin-top:15px;}
+#secretMsg{display:none;margin-top:10px;font-size:15px;opacity:0;transition:opacity 1s;}
 
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 <h1>🎂 Happy Birthday</h1>
 <p>So… I made something for you</p>
 
-<button id="startBtn" onclick="startExp()">Start</button>
+<button id="startBtn" onclick="start()">Start</button>
 
 <p id="text"></p>
 <img id="slide">
 <p id="finalMsg"></p>
 
-<button id="secretBtn" onclick="showSecret()">Tap this 🙂</button>
-<p id="secretMsg" style="display:none;"></p>
+<button id="secretBtn" onclick="secret()">Tap this 🙂</button>
+<p id="secretMsg"></p>
 
 </div>
 
@@ -87,20 +96,22 @@ img{
 </audio>
 
 <script>
-let i=0,step=0;
+let step=0,i=0;
 
 const msgs=[
 "Happiest birthday my shanuu 🎂",
-"I couldn’t do something big but I wanted this to feel special",
-"You are someone really important to me",
-"Even when things get weird, I still care",
-"You really mean a lot to me",
-"I’m glad you are in my life 🙂"
+"I know I couldn’t do something big this time",
+"But I still wanted to make this feel different",
+"You are actually really important to me",
+"Even when things get messy or weird",
+"I still care… more than I show sometimes",
+"You make normal days feel a little better",
+"And yeah… I’m really glad you are in my life 🙂"
 ];
 
 const imgs=["shanu_1.jpg","shanu_2.jpg","shanu_3.jpg","shanu_4.jpg","shanu_5.jpg"];
 
-function startExp(){
+function start(){
 document.getElementById("startBtn").style.display="none";
 document.getElementById("music").play().catch(()=>{});
 typeMsg();
@@ -109,43 +120,51 @@ hearts();
 
 function typeMsg(){
 if(step<msgs.length){
-let txt=msgs[step];
+let t=msgs[step];
 let el=document.getElementById("text");
 el.innerHTML="";
 i=0;
 
 function type(){
-if(i<txt.length){
-el.innerHTML+=txt.charAt(i);
+if(i<t.length){
+el.innerHTML+=t.charAt(i);
 i++;
 setTimeout(type,30);
 }else{
 step++;
-setTimeout(typeMsg,1200);
+setTimeout(typeMsg,1500);
 }
 }
 type();
 }else{
-slideShow();
+slide();
 }
 }
 
-function slideShow(){
-let index=0;
+function slide(){
+let idx=0;
 let img=document.getElementById("slide");
 img.style.display="block";
 
-let inter=setInterval(()=>{
-img.src=imgs[index];
-index++;
+let interval=setInterval(()=>{
+img.style.opacity=0;
 
-if(index===imgs.length){
-clearInterval(inter);
+setTimeout(()=>{
+img.src=imgs[idx];
+img.style.opacity=1;
+idx++;
+},400);
+
+if(idx===imgs.length){
+clearInterval(interval);
 
 setTimeout(()=>{
 img.style.display="none";
-document.getElementById("finalMsg").style.display="block";
-document.getElementById("finalMsg").innerText="That’s it… just wanted to make you smile 🙂";
+let f=document.getElementById("finalMsg");
+f.style.display="block";
+f.innerText="That’s it… just wanted to make you smile today and everyday forever🙂";
+setTimeout(()=>f.style.opacity=1,100);
+
 confetti();
 
 setTimeout(()=>{
@@ -157,9 +176,11 @@ document.getElementById("secretBtn").style.display="block";
 },2000);
 }
 
-function showSecret(){
-document.getElementById("secretMsg").style.display="block";
-document.getElementById("secretMsg").innerText="Okay… secret is… you matter more than you think 🙂";
+function secret(){
+let s=document.getElementById("secretMsg");
+s.style.display="block";
+s.innerText="And yeah… no matter what happens, you’ll always have someone here 🙂";
+setTimeout(()=>s.style.opacity=1,100);
 }
 
 /* hearts */
@@ -170,8 +191,8 @@ h.innerText="❤";
 h.style.position="fixed";
 h.style.bottom="0";
 h.style.left=Math.random()*100+"vw";
-h.style.fontSize="20px";
-h.style.color="white";
+h.style.fontSize=(12+Math.random()*20)+"px";
+h.style.opacity=0.8;
 h.style.animation="up 5s linear";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),5000);
@@ -180,7 +201,7 @@ setTimeout(()=>h.remove(),5000);
 
 /* confetti */
 function confetti(){
-for(let i=0;i<50;i++){
+for(let i=0;i<60;i++){
 let c=document.createElement("div");
 c.style.position="fixed";
 c.style.width="6px";
@@ -188,13 +209,24 @@ c.style.height="6px";
 c.style.background="white";
 c.style.top="0";
 c.style.left=Math.random()*100+"vw";
+c.style.opacity=Math.random();
 c.style.animation="fall 3s linear";
 document.body.appendChild(c);
 setTimeout(()=>c.remove(),3000);
 }
 }
-
 </script>
+
+<style>
+@keyframes up{
+from{transform:translateY(0);}
+to{transform:translateY(-100vh);}
+}
+
+@keyframes fall{
+to{transform:translateY(100vh);}
+}
+</style>
 
 </body>
 </html>
