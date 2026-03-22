@@ -1,81 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hey You :)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
-            background-size: 800% 800%;
-            animation: gradientBG 10s ease infinite;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 80px;
-            transition: all 1s ease;
-        }
+<title>Hey You :)</title>
 
-        @keyframes gradientBG {
-            0% {background-position: 0%}
-            50% {background-position: 100%}
-            100% {background-position: 0%}
-        }
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+    background-size: 800% 800%;
+    animation: gradientBG 10s ease infinite;
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-        button {
-            padding: 14px 25px;
-            font-size: 18px;
-            border: none;
-            border-radius: 12px;
-            background: white;
-            color: #ff4b5c;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* animated background */
+@keyframes gradientBG {
+    0% {background-position: 0%}
+    50% {background-position: 100%}
+    100% {background-position: 0%}
+}
 
-        button:hover {
-            transform: scale(1.1);
-        }
+/* main card */
+.container {
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+}
 
-        .box {
-            display: none;
-            margin-top: 30px;
-            opacity: 0;
-            transition: opacity 1s;
-        }
+/* heading */
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
 
-        .show {
-            opacity: 1;
-        }
+/* button */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    color: #ff4b5c;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        img {
-            width: 260px;
-            border-radius: 15px;
-            margin-top: 20px;
-            display: none;
-            transition: opacity 1s;
-        }
+button:hover {
+    transform: scale(1.1);
+}
 
-        #finalMsg {
-            display: none;
-            font-size: 20px;
-            margin-top: 20px;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-    </style>
+/* text area */
+#text {
+    margin-top: 20px;
+    font-size: 16px;
+    min-height: 60px;
+}
+
+/* image */
+img {
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 15px;
+    display: none;
+    transition: opacity 1s;
+}
+
+/* final message */
+#finalMsg {
+    margin-top: 15px;
+    display: none;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+/* floating hearts */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    color: white;
+    font-size: 18px;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    from {transform: translateY(0);}
+    to {transform: translateY(-100vh);}
+}
+</style>
 </head>
 
 <body>
 
-<h1>🎂 Happy Birthday</h1>
-<p>So… I made something for you</p>
+<div class="container">
+    <h1>🎂 Happy Birthday</h1>
+    <p>So… I made something for you</p>
 
-<button id="startBtn" onclick="startExperience()">Start</button>
+    <button id="startBtn" onclick="startExperience()">Start</button>
 
-<div id="content" class="box">
-    <p id="text"></p>
-    <img id="slide">
-    <p id="finalMsg"></p>
+    <div id="content">
+        <p id="text"></p>
+        <img id="slide">
+        <p id="finalMsg"></p>
+    </div>
 </div>
 
 <audio id="bgmusic" loop>
@@ -92,12 +131,9 @@ const messages = [
     "You are someone really important to me",
     "Maybe we argue sometimes, maybe things get weird",
     "But no matter what happens, I’ll always be there",
-    "I never let ego or anger stay when it comes to you",
-    "You really mean a lot to me, more than I say",
+    "You really mean a lot to me",
     "I’m really glad you are in my life",
-    "And yeah… I even like your family, especially your cute shivi 🙂",
-    "So yeah… I tried making something instead",
-    "Hope this makes you smile a little 🙂"
+    "So yeah… I tried making something instead 🙂"
 ];
 
 const images = [
@@ -111,14 +147,11 @@ const images = [
 function startExperience() {
     document.getElementById("startBtn").style.display = "none";
 
-    let content = document.getElementById("content");
-    content.style.display = "block";
-    setTimeout(() => content.classList.add("show"), 100);
-
     let music = document.getElementById("bgmusic");
-    music.play().catch(() => {});
+    music.play().catch(()=>{});
 
     playMessages();
+    createHearts();
 }
 
 function typeWriter(text, callback) {
@@ -176,6 +209,20 @@ function startSlideshow() {
             }, 2000);
         }
     }, 2000);
+}
+
+/* floating hearts */
+function createHearts() {
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "❤";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (12 + Math.random() * 20) + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 6000);
+    }, 500);
 }
 </script>
 
