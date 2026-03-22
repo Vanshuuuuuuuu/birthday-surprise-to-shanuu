@@ -12,17 +12,12 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 80px;
-            overflow: hidden;
         }
 
         @keyframes gradientBG {
             0% {background-position: 0%}
             50% {background-position: 100%}
             100% {background-position: 0%}
-        }
-
-        h1 {
-            font-size: 40px;
         }
 
         button {
@@ -33,48 +28,26 @@
             background: white;
             color: #ff4b5c;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(255,255,255,0.6);
-            transition: 0.3s;
-        }
-
-        button:hover {
-            transform: scale(1.1);
         }
 
         .box {
-            margin-top: 30px;
             display: none;
+            margin-top: 30px;
         }
 
         img {
             width: 260px;
-            border-radius: 20px;
+            border-radius: 15px;
             margin-top: 20px;
             display: none;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-
-        .floating {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: white;
-            opacity: 0.3;
-            border-radius: 50%;
-            animation: float 10s infinite;
-        }
-
-        @keyframes float {
-            from {transform: translateY(0);}
-            to {transform: translateY(-800px);}
         }
     </style>
 </head>
 
 <body>
 
-<h1>🎂 Happy Birthday ✨</h1>
-<p>So… I made something for you</p>
+<h1>🎂 Happy Birthday</h1>
+<p>I made something for you 🙂</p>
 
 <button onclick="nextStep()">Start</button>
 
@@ -83,31 +56,25 @@
     <img id="slide">
 </div>
 
-<audio autoplay loop>
-    <source src="freesound_community-birthday-card-73275.mp3" type="audio/mpeg">
-</audio>
-
 <script>
 let step = 0;
-let i = 0;
 
-const messages = "[happiest birthday my shanuu
-   " I wasn't abe to anything special for u but I wished to make u feel special on this birthday 
-      "  you are the one who is always special to me.
-        "You are actually one of my favourite people",
-"Talking to you is the best part of my day sometimes"
-    "maybe ig u are angry from me maybe idk u lost intrest in our friendship but I am always the promise keeper
-   " no matter whatever happen if u ever need me I will always be ur side 
-    "never think there is something about ego or anger form ther start I everything aside for u 
-    "just want to say thanku for making me feel special even for some time but I am happy to be that and glad that ur in my Life
-   " And always love to everyone your family and specially to my cutu shivi <3",
+const messages = [
+    "Happiest birthday my shanuu 🎂",
+    "I wasn't able to do anything special for you but I wanted to make you feel special on your birthday",
+    "You are the one who is always special to me",
+    "Maybe we argue sometimes, maybe things get weird",
+    "But no matter what happens, I’ll always be by your side",
+    "I never let ego or anger stay when it comes to you",
+    "You really mean a lot to me, more than I usually say",
+    "I’m really glad that you are in my life",
+    "And yeah… I even love your family, especially your cute shivi <3",
     "Okay so… I didn’t know what to gift you 😅",
     "So I tried making something instead",
-    "This took more effort than expected tbh",
+    "This took more effort than expected tbh 😭",
     "But yeah… you’re really special",
     "Talking to you just feels different",
-    "So I thought this might make you smile 🙂",
-        "I hape I had made this birthday a bit special for u just by my small gesture",
+    "So I thought this might make you smile 🙂"
 ];
 
 const images = [
@@ -118,28 +85,11 @@ const images = [
     "shanu_5.jpg"
 ];
 
-function typeWriter(text, callback) {
-    let speed = 30;
-    document.getElementById("text").innerHTML = "";
-    i = 0;
-
-    function typing() {
-        if (i < text.length) {
-            document.getElementById("text").innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typing, speed);
-        } else if (callback) {
-            callback();
-        }
-    }
-    typing();
-}
-
 function nextStep() {
     document.getElementById("content").style.display = "block";
 
     if (step < messages.length) {
-        typeWriter(messages[step]);
+        document.getElementById("text").innerText = messages[step];
         step++;
     } else {
         startSlideshow();
@@ -151,20 +101,10 @@ function startSlideshow() {
     let img = document.getElementById("slide");
     img.style.display = "block";
 
-    setInterval(() => {
+    setInterval(function() {
         img.src = images[index];
         index = (index + 1) % images.length;
     }, 2000);
-}
-
-// floating particles
-for (let i = 0; i < 30; i++) {
-    let dot = document.createElement("div");
-    dot.className = "floating";
-    dot.style.left = Math.random() * 100 + "vw";
-    dot.style.top = Math.random() * 100 + "vh";
-    dot.style.animationDuration = (5 + Math.random() * 10) + "s";
-    document.body.appendChild(dot);
 }
 </script>
 
