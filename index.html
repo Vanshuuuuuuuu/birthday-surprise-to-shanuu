@@ -54,6 +54,7 @@
 <div id="content" class="box">
     <p id="text"></p>
     <img id="slide">
+    <p id="finalMsg" style="display:none; margin-top:20px; font-size:20px;"></p>
 </div>
 <audio id="bgmusic" loop>
     <source src="freesound_community-birthday-card-73275.mp3" type="audio/mpeg">
@@ -103,11 +104,23 @@ function nextStep() {
 function startSlideshow() {
     let index = 0;
     let img = document.getElementById("slide");
+    let finalMsg = document.getElementById("finalMsg");
+
     img.style.display = "block";
 
-    setInterval(function() {
+    let interval = setInterval(function() {
         img.src = images[index];
-        index = (index + 1) % images.length;
+        index++;
+
+        if (index === images.length) {
+            clearInterval(interval);
+
+            setTimeout(() => {
+                img.style.display = "none";
+                finalMsg.style.display = "block";
+                finalMsg.innerText = "That’s it… just wanted to make you smile 🙂";
+            }, 2000);
+        }
     }, 2000);
 }
 </script>
